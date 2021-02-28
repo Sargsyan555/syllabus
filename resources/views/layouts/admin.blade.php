@@ -115,6 +115,7 @@ Website: https://teachprod.com
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        @if(auth()->user()->hasRole('admin'))
                         <li class="sidebar-item">
                             <a href="/users">
                                 <i class="fal fa-calendar"></i>
@@ -139,6 +140,7 @@ Website: https://teachprod.com
                                 <span>Simple Videos</span>
                             </a>
                         </li>
+                    @endif
                         <!-- end sidebar-item -->
                     </ul>
                 </div>      <!-- end sidebar-block -->
