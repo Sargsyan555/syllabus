@@ -34,7 +34,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/users', [App\Http\Controllers\HomeController::class, 'users']);
-Route::get('/subscribers', [App\Http\Controllers\HomeController::class, 'subscribers']);
+
 Route::get('/members_videos', [App\Http\Controllers\HomeController::class, 'members_videos']);
 Route::get('/simple_videos', [App\Http\Controllers\HomeController::class, 'simple_videos']);
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
@@ -44,3 +44,12 @@ Route::post('add_members_videos', [App\Http\Controllers\Members_videosController
 Route::post('delete_subscriber',[App\Http\Controllers\SubscribeController::class, 'destroy']);
 Route::post('change_status',[App\Http\Controllers\Simle_videosController::class, 'update']);
 Route::post('edit_simle_video',[App\Http\Controllers\Simle_videosController::class, 'edit']);
+
+
+Route::middleware(['role:admin'])->group(function () {
+    Route::get('/subscribers', [App\Http\Controllers\HomeController::class, 'subscribers']);
+});
+
+Route::middleware(['role:user'])->group(function () {
+   //
+});
