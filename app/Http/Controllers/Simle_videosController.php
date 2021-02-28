@@ -9,8 +9,11 @@ class Simle_videosController extends Controller
 {
     public function update(Request $request){
         $simple_videos = DB::table('simple_videos')->where('id',$request->post('id'))->get();
-       foreach ($simple_videos as $simple_video)
-        $status = $simple_video->status;
+
+       foreach ($simple_videos as $simple_video){
+           $status = $simple_video->status;
+       }
+
        if ($status == 1){
            $active = 0;
        }else{
