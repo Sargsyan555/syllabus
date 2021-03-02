@@ -12,15 +12,31 @@
                             <table id="ecommerce-datatable" class="table table-middle table-hover table-responsive">
                                 <thead>
                                 <tr>
-                                    <th class="no-sort">Email</th>
+                                    <th class="no-sort">
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="no-sort">Video</th>
+                                    <th class="no-sort">Name</th>
                                     <th class="no-sort">Link</th>
                                     <th class="no-sort">Status</th>
                                     <th class="text-center no-sort">Action</th>
                                 </tr>
-                                </thead>
+                                </thead >
+                                <tbody id="table_data">
                                 @foreach ($simple_videos as $simple_video)
-                                    <tbody >
-                                    <tr id="{{$simple_video->id}}">
+                                    <tr class="{{$simple_video->id}}" id="{{$simple_video->id}}">
+                                        <td>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox">
+                                                <span></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <a href="" class="video-btn" data-toggle="modal" data-src="{{ $simple_video->link }}" data-target="#video_pop"><i class="fa fa-play" style="font-size: 20px" aria-hidden="true"></i>   </a>
+                                        </td>
                                         <td data-target="name" class="">{{ $simple_video->name }}</td>
                                         <td data-target="link" class="">{{$simple_video->link}}</td>
                                         <td class="">
@@ -29,18 +45,20 @@
                                         <td>
                                             <ul class="list-unstyled table-actions">
                                                 <li class="li">
-                                                    <a class="deleteProduct delete{{$simple_video->id}}" data-id="{{$simple_video->id}}"  >
+                                                    <a class="delete_video delete{{$simple_video->id}}" data-id="{{$simple_video->id}}"  >
                                                         <i class="fal fa-trash" data-bs-original-title="Archive" data-bs-toggle="tooltip"></i>
                                                     </a>
                                                 </li>
                                                 <li class="li">
                                                     <a type="button" data-role="update_category" data-id='{{$simple_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
-                                                        <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>                                                </li>
+                                                        <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>
-                                    </tbody>
                                 @endforeach
+                                </tbody>
                             </table>
 
                         </div>
@@ -67,21 +85,19 @@
                         </div>
                         <div class="form-group">
                             <label for="link">Link:</label>
-                            <input type="text" class="form-control" name="link" data-target="link" id="link">
+                            <input type="text" class="form-control " name="link" data-target="link" id="link">
                         </div>
                         <input type="hidden" name="id" id="id" />
-                        <button  class="btn btn-primary mt-3" name="insert" id="update_data" value="" data-dismiss="modal">Submit</button>
+                        <button  class="btn btn-primary mt-3 update_data" name="insert"  value="" data-dismiss="modal">Submit</button>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" crossorigin="anonymous" />
 
     <script>
         $(document).ready(function() {
@@ -94,32 +110,45 @@
                 $('#link').val(link)
                 $('#id').val(id)
             });
-            $(document).on('click', '#update_data', function(e) {
+            $(document).on('click', '.update_data', function (e) {
                 e.preventDefault();
+                var id = $('#id').val();
                 $.ajax({
-                    url: "/edit_simle_video",
+                    url: "/edit_simple_video",
                     data: {
                         id: $('#id').val(),
                         name: $('#name').val(),
                         link: $('#link').val()
                     },
                     method: "POST",
-                    dataType: 'json',
+                    dataType: 'html',
                     success: function (res) {
-
-                    },
+                        $('.'+id).remove();
+                        $('#table_data').prepend(res);
+                        },
                     error: function () {
                         alert('error')
                     }
                 });
             });
-
+            $('.delete_video').click(function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                $.ajax({
+                    url: "/delete_simple_video",
+                    data: {id: id},
+                    method: "POST",
+                    dataType: 'json',
+                    success: function (res) {
+                        $('.delete' + id).parent().parent().parent().parent().remove();
+                    }
+                });
+            });
             $('.checked').click(function (e) {
-
                 e.preventDefault();
                 var id = $(this).val();
                 $.ajax({
-                    url: "/change_status",
+                    url: "/change_simple_video_status",
                     data: {id:id},
                     method: "POST",
                     dataType: 'json',

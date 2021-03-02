@@ -12,13 +12,29 @@
                             <table id="ecommerce-datatable" class="table table-middle table-hover table-responsive">
                                 <thead>
                                 <tr>
-                                    <th class="no-sort">email</th>
+                                    <th class="no-sort">
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="no-sort">Image</th>
+                                    <th class="no-sort">Email</th>
                                     <th class="text-center no-sort">Action</th>
                                 </tr>
                                 </thead>
                                 @foreach ($subscribers as $subscriber)
                                     <tbody >
                                         <tr>
+                                            <td>
+                                                <label class="custom-checkbox">
+                                                    <input type="checkbox">
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <a href="#"><img src="{{asset('assets_admin/images/avatar.png')}}" style="height: 50px;" alt="User" class="rounded-circle"></a>
+                                            </td>
                                             <td class="">{{ $subscriber->email }}</td>
                                             <td>
                                                 <ul class="list-unstyled table-actions">

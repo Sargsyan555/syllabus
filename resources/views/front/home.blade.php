@@ -180,6 +180,8 @@
         </div>
     </section>
     <!--syllabus-software end-->
+@if (Auth::check())
+
     <!--Section for videos-1-->
     <section class="pos-r grey-bg bg-effect-2 ">
         <div class="container">
@@ -198,13 +200,11 @@
                     <div id="testimonial-2" class="testimonial-carousel carousel slide testimonial-2" data-ride="carousel" data-interval="2500">
                         <!-- Wrapper for slides -->
                         <div class="row">
-                            <div class="col-lg-6 col-md-12 p-3">
-                                <iframe height="300" class="video-2 w-100   " src="https://www.youtube.com/embed/i3s2ug2n3yQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
-                            </div>
-                            <div class="col-lg-6 col-md-12 p-3">
-                                <iframe height="300" class="video-2 w-100   " src="https://www.youtube.com/embed/cq3gdWCM8Fg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
-                            </div>
-
+                            @foreach($training_videos as $training_video)
+                                <div class="col-lg-6 col-md-12 p-3">
+                                    <iframe height="300" class="video-2 w-100   " src="{{$training_video->link}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen ></iframe>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <!-- End Carousel -->
@@ -212,7 +212,6 @@
             </div>
         </div>
     </section>
-@if (Auth::check())
     <section class="pos-r grey-bg bg-effect-2 ">
         <div class="container">
             <div class="row">

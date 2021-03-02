@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMembersVideosTable extends Migration
+class CreateTrainingVideosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateMembersVideosTable extends Migration
      */
     public function up()
     {
-        Schema::create('members_videos', function (Blueprint $table) {
+        Schema::create('training_videos', function (Blueprint $table) {
             $table->id();
-            $table->enum('Category', ['use_of_software','manually_setup','automated_setup','run_simulation','flat_bet_and_videos']);
             $table->string('name');
             $table->string('link');
             $table->tinyInteger('status')->default('1');
@@ -30,6 +29,6 @@ class CreateMembersVideosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members_videos');
+        Schema::dropIfExists('training_videos');
     }
 }

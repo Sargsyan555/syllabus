@@ -69,20 +69,8 @@ Website: https://teachprod.com
     body.setAttribute("data-theme-mode", appThemeMode);
     body.setAttribute("data-theme-sidebar-shrinked", isShrinked)
 </script>
-<script>
-    function killCopy(e){
-        return false;
-    }
-    function reEnable(){
-        return true;
-    }
-    document.onselectstart=new Function ("return false");
-    if (window.sidebar){
-        document.onmousedown=killCopy;
-        document.onclick=reEnable;
-    }
-</script>
-<div class="container-fluid">
+
+<div class="container-fluid p-lg-0">
 
     <nav id="left-sidebar" class="left-sidebar">
         <!-- start sidebar-header -->
@@ -118,28 +106,68 @@ Website: https://teachprod.com
                         @if(auth()->user()->hasRole('admin'))
                         <li class="sidebar-item">
                             <a href="/users">
-                                <i class="fal fa-calendar"></i>
+                                <i class="fas fa-user"></i>
                                 <span>Users</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="/subscribers">
-                                <i class="fal fa-calendar"></i>
+                                <i class="fas fa-users"></i>
                                 <span>Subscribers</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="/members_videos">
-                                <i class="fal fa-calendar"></i>
+                                <i class="fas fa-video"></i>
                                 <span>Edit Members Videos</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="/simple_videos">
-                                <i class="fal fa-calendar"></i>
+                                <i class="fas fa-video"></i>
                                 <span>Simple Videos</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="/training_videos">
+                                <i class="fas fa-video"></i>
+                                <span>Training Videos</span>
+                            </a>
+                        </li>
+                        @endif
+                    @if(auth()->user()->hasRole('user'))
+                            @if( Auth::user()->status == 1)
+                                <li class="sidebar-item">
+                                    <a href="/use_of_software">
+                                        <i class="fas fa-video"></i>
+                                        <span>Use of Software</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/manually_setup">
+                                        <i class="fas fa-video"></i>
+                                        <span>Manually Setup</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/automated_setup">
+                                        <i class="fas fa-video"></i>
+                                        <span>Automated Setup</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/run_simulation">
+                                        <i class="fas fa-video"></i>
+                                        <span>Run Simulation</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/flat_bet_and_videos">
+                                        <i class="fas fa-video"></i>
+                                        <span>Flat Bet And Videos</span>
+                                    </a>
+                                </li>
+                            @endif
                     @endif
                         <!-- end sidebar-item -->
                     </ul>
@@ -381,8 +409,10 @@ Website: https://teachprod.com
         }
     });
 </script>
+
 <!-- inject js end -->
 @yield('scripts')
+
 </body>
 
 <!-- Mirrored from flexadmin2.web.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Feb 2021 10:07:56 GMT -->

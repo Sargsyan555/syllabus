@@ -28,17 +28,17 @@ class HomeController extends Controller
     {
         $users= User::all();
 
-        return view('home', compact('users'));
+        return view('admin/home', compact('users'));
     }
     public function users()
     {
         $users= User::all();
 
-        return view('users', compact('users'));
+        return view('admin/users', compact('users'));
     }
     public function subscribers()
     {
-        return view('subscribers', [
+        return view('admin/subscribers', [
             'subscribers' => DB::table('subscribers')->paginate(5)
         ]);
     }
@@ -46,11 +46,37 @@ class HomeController extends Controller
     {
         $simple_videos = DB::table('simple_videos')->get()->toArray();
 
-        return view('simple_videos',compact('simple_videos'));
+        return view('admin/simple_videos',compact('simple_videos'));
     }
-    public function members_videos()
+    public function training_videos()
     {
-        return view('members_videos');
+        $training_videos = DB::table('training_videos')->get()->toArray();
+
+        return view('admin/training_videos',compact('training_videos'));
     }
-    /**/
+    public function edit_members_videos()
+    {
+        $members_videos = DB::table('members_videos')->get()->toArray();
+        return view('admin/edit_members_videos',compact('members_videos'));
+    }
+    public function change_user_status(Request $request){
+        $users = DB::table('users')->where('id',$request->post('id'))->get();
+
+        foreach ($users as $user){
+            $status = $user->status;
+        }
+
+        if ($status == 1){
+            $active = 0;
+        }else{
+            $active = 1;
+        }
+        DB::table('users')
+            ->where('id',$request->post('id'))
+            ->update(['status' => $active]);
+        return response()->json([
+            'success' => $active
+        ]);
+
+    }
 }

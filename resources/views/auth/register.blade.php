@@ -57,7 +57,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mt-md-0 my-2 ">
-                                    <input  type="text" class="form-control @error('email') is-invalid @enderror" name="phone" placeholder="Phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                    <input  type="text" class="form-control @error('email') is-invalid @enderror" name="phone" placeholder="Phone" value="{{ old('phone') }}" autocomplete="phone">
 
                                     @error('phone')
                                     <span class="invalid-feedback" role="alert">

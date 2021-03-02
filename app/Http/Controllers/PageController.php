@@ -10,8 +10,9 @@ class PageController extends Controller
     public function home()
     {
         $simple_videos = DB::table('simple_videos')->where('status',1)->get()->toArray();
+        $training_videos = DB::table('training_videos')->where('status',1)->get()->toArray();
 
-        return view('front/home' ,compact('simple_videos'));
+        return view('front/home' ,compact('simple_videos','training_videos'));
     }
     public function casino_rng()
     {
