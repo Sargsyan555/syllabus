@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Members_Video extends Model
 {
     protected $table = 'members_videos';
-    protected $fillable = ['category','name','link'];
+    protected $fillable = ['category','name','link','status'];
 }

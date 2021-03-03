@@ -16,8 +16,8 @@ class CreateSimpleVideosTable extends Migration
         Schema::create('simple_videos', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('status');
             $table->string('link');
-            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

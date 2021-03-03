@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrainingVideo extends Model
 {
-    use HasFactory;
+    protected $table = 'training_videos';
+    protected $fillable = ['name', 'link', 'status'];
 }

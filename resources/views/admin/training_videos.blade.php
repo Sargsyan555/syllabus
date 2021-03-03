@@ -1,23 +1,50 @@
 
 @extends('layouts.admin')
 
-@section('title', 'Members Videos')
+@section('title', 'Training Videos')
 
 @section('content')
     <div class="page-content">
-        <!-- Button trigger modal -->
-        <!-- POPUP -->
-        <div class="modal fade" id="video_pop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">
-                            <span class="" >x</span>
-                        </button>
-                        <!-- 16:9 aspect ratio -->
-                        <div class="embed-responsive embed-responsive-16by9 col-12">
-                            <iframe class="embed-responsive-item col-12 " height="400" src="" id="video"  allowscriptaccess="always"></iframe>
+        <!-- Modal -->
+        <div class="container">
+            <div class="modal fade rounded" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-body">
+
+                            <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                                &times;
+                            </button>
+                            <!-- 16:9 aspect ratio -->
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item col-12 " height="400" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+                            </div>
+
                         </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <div class="card">
+                    <div class="card-header justify-content-between">
+                        <h4 class="fw-700 m-0 fs-base">Add Simple Videos</h4>
+                    </div>
+                    <div id="cardBasicInput" class="card-body show">
+                        <form  id="add_details" name="add" class="group">
+                            <div class="mb-3">
+                                <label for="name">Video Name</label>
+                                <input type="text" id="name_insert" class="form-control" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="example-input-link">Video Link</label>
+                                <input type="url" id="link_insert" name="link" class="form-control"  required>
+                            </div>
+                            <button type="submit" class="add_video btn btn-highlight waves-effect">Add Video</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -53,7 +80,9 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a href="" class="video-btn" data-toggle="modal" data-src="{{ $training_video->link }}" data-target="#video_pop"><i class="fa fa-play" style="font-size: 20px" aria-hidden="true"></i>   </a>
+                                            <a href="" class="video_btn" data-toggle="modal" data-target="#myModal" data-src="{{$training_video->link }}">
+                                                <i class="fa fa-play " aria-hidden="true"></i>
+                                            </a>
                                         </td>
                                         <td data-target="name" class="">{{ $training_video->name }}</td>
                                         <td data-target="link" class="">{{$training_video->link}}</td>
@@ -121,6 +150,21 @@
     </div>
     <script>
         $(document).ready(function() {
+          $('.video_btn').click(function() {
+                var videoSrc = $(this).data( "src" );
+                $("#video").attr('src',videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1" );
+            });
+
+            // when the modal is opened autoplay it
+            $('#video_btn').on('shown.bs.modal', function (e) {
+
+                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+            })
+            // stop playing the youtube video when I close the modal
+            $('#video_pop').on('hide.bs.modal', function (e) {
+                $("#video").attr('src',videoSrc);
+                $("#video").attr('src',videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0" );
+            })
             $(document).on('click', '.update', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -133,7 +177,6 @@
             $(document).on('click', '.update_data', function (e) {
                 e.preventDefault();
                 var id = $('#id').val();
-
                 $.ajax({
                     url: "/edit_training_video",
                     data: {
@@ -152,6 +195,28 @@
                     }
                 });
             });
+            $('.add_video').click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "/add_training_video",
+                    data: {
+                        status:1,
+                        name:$('#name_insert').val(),
+                        link:$('#link_insert').val()
+                    },
+                    method: "POST",
+                    dataType: 'html',
+                    success: function (res) {
+                        $('#add_details')[0].reset();
+                        $('#table_data').prepend(res);
+                    },
+                    error: function () {
+                        alert('error')
+                    }
+                });
+
+            })
             $('.delete_video').click(function (e) {
                 e.preventDefault();
                 var id = $(this).data("id");
@@ -184,26 +249,6 @@
                     },
                 });
             })
-            // Gets the video src from the data-src on each button
-            var $videoSrc;
-            $('.video-btn').click(function () {
-                $videoSrc = $(this).data("src");
-                $("#video").attr('src', $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1");
-
-            });
-            //console.log($videoSrc);
-
-            // when the modal is opened autoplay it
-            $('#video_pop').on('shown.bs.modal', function (e) {
-
-                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
-            })
-            // stop playing the youtube video when I close the modal
-            $('#video_pop').on('hide.bs.modal', function (e) {
-                $("#video").attr('src', $videoSrc);
-            })
-
-
         })
     </script>
 

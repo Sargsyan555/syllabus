@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Members Videos')
+@section('title', 'Use Of Software Videos')
 
 @section('content')
     <div class="page-content">

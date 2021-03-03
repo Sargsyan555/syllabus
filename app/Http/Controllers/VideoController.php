@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Members_Video;
+use App\Models\Simple_videos;
+use App\Models\TrainingVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+Use Illuminate\Auth\Events\Validated;
 use phpDocumentor\Reflection\Types\Compound;
 
 class VideoController extends Controller
@@ -12,20 +15,22 @@ class VideoController extends Controller
     /*Start Controllers for members Video*/
     /*Insert*/
 
-    public function store(Request $request)
+    public function add_members_videos(Request $request)
     {
+
         $members_video = new Members_Video($request->all());
         $members_video->save();
-        $videos = view('admin/edit_members_video_tr', compact('members_video'));
+        $videos = view('admin/members_video_tr', compact('members_video'));
         return $videos;
     }
     /*Update*/
-    public function edit_members_video(Request $request){
+    public function update_members_video(Request $request){
         $member = DB::table('members_videos')
             ->where('id', $request->post('id'))
             ->update([
                 'name' => $request->name,
-                'link' => $request->link]);
+                'link' => $request->link,
+            ]);
 
         $members = DB::table('members_videos')
             ->where('id',$request->post('id'))
@@ -70,6 +75,18 @@ class VideoController extends Controller
     /*End Members Video*/
 
     /*Start Controllers for Simple Video*/
+    /*Insert*/
+    public function add_simple_video(Request $request)
+    {
+
+        $simple_video = new Simple_videos($request->all());
+        $simple_video->save();
+        $videos = view('admin/simple_videos_tr', compact('simple_video'));
+        return $videos;
+
+
+    }
+
     /*Update*/
     public function edit_simple_video(Request $request){
         DB::table('simple_videos')
@@ -81,8 +98,8 @@ class VideoController extends Controller
             ->where('id',$request->post('id'))
             ->get()
             ->toArray();
-
-        $videos = view('admin/simple_videos_tr', compact('simple_videos'));
+        foreach ($simple_videos as $simple_video)
+        $videos = view('admin/simple_videos_tr', compact('simple_video'));
         return $videos;
 
     }
@@ -121,6 +138,15 @@ class VideoController extends Controller
     /*End Simple Video*/
 
     /*Start Controllers for Training Video*/
+    /*Insert*/
+    public function add_training_video(Request $request)
+    {
+        $training_video = new TrainingVideo($request->all());
+        $training_video->save();
+        $videos = view('admin/training_video_tr', compact('training_video'));
+        return $videos;
+    }
+
     /*Delete*/
     public function delete_training_video(Request $request){
         DB::table('training_videos')->where('id',$request->post('id'))->delete();
@@ -142,8 +168,8 @@ class VideoController extends Controller
             ->where('id',$request->post('id'))
             ->get()
             ->toArray();
-
-        $videos = view('admin/training_video_tr', compact('training_videos'));
+        foreach ($training_videos as $training_video)
+        $videos = view('admin/training_video_tr', compact('training_video'));
         return $videos;
 
     }

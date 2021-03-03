@@ -135,39 +135,37 @@ Website: https://teachprod.com
                             </a>
                         </li>
                         @endif
-                    @if(auth()->user()->hasRole('user'))
-                            @if( Auth::user()->status == 1)
-                                <li class="sidebar-item">
-                                    <a href="/use_of_software">
-                                        <i class="fas fa-video"></i>
-                                        <span>Use of Software</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="/manually_setup">
-                                        <i class="fas fa-video"></i>
-                                        <span>Manually Setup</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="/automated_setup">
-                                        <i class="fas fa-video"></i>
-                                        <span>Automated Setup</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="/run_simulation">
-                                        <i class="fas fa-video"></i>
-                                        <span>Run Simulation</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="/flat_bet_and_videos">
-                                        <i class="fas fa-video"></i>
-                                        <span>Flat Bet And Videos</span>
-                                    </a>
-                                </li>
-                            @endif
+                        @if( Auth::user()->status == 1)
+                            <li class="sidebar-item">
+                                <a href="/use_of_software">
+                                    <i class="fas fa-video"></i>
+                                    <span>Use of Software</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/manually_setup">
+                                    <i class="fas fa-video"></i>
+                                    <span>Manually Setup</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/automated_setup">
+                                    <i class="fas fa-video"></i>
+                                    <span>Automated Setup</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/run_simulation">
+                                    <i class="fas fa-video"></i>
+                                    <span>Run Simulation</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/flat_bet_and_videos">
+                                    <i class="fas fa-video"></i>
+                                    <span>Flat Bet And Videos</span>
+                                </a>
+                            </li>
                     @endif
                         <!-- end sidebar-item -->
                     </ul>

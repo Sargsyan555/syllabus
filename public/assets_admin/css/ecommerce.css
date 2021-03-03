@@ -31,3 +31,19 @@
     color: #0b0b0b;
 }
 
+.modal-dialog {
+    max-width: 70%;
+    margin: 30px auto;
+}
+
+.modal-body {
+    position:relative;
+    padding:0px;
+}
+.close {
+    position:absolute;
+    right:0px;
+    top:0;
+    z-index:999;
+    opacity:1;
+}

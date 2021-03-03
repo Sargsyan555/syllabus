@@ -5,23 +5,29 @@
 
 @section('content')
     <div class="page-content">
-        <!-- Button trigger modal -->
-        <!-- POPUP -->
-        <div class="modal fade" id="video_pop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">
-                            <span class="" >x</span>
-                        </button>
-                        <!-- 16:9 aspect ratio -->
-                        <div class="embed-responsive embed-responsive-16by9 col-12">
-                            <iframe class="embed-responsive-item col-12 " height="400" src="" id="video"  allowscriptaccess="always"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Modal -->
+       <div class="container">
+           <div class="modal fade rounded" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+
+
+                       <div class="modal-body">
+
+                           <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                               &times;
+                           </button>
+                           <!-- 16:9 aspect ratio -->
+                           <div class="embed-responsive embed-responsive-16by9">
+                               <iframe class="embed-responsive-item col-12 " height="400" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+                           </div>
+
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
         <div class="row">
             <div class="col-md-8 m-auto">
                 <div class="card">
@@ -33,7 +39,7 @@
                             <div class="mb-3">
                                 <label for="example-input">Select Category</label>
 
-                                <select class="form-control" name="category" id="category" required="" aria-label=".form-select-lg example">
+                                <select class="form-control" name="category" id="category_inser" required="" aria-label=".form-select-lg example">
                                     <option value="">  Select   </option>
                                     <option value="use_of_software">Use of Software</option>
                                     <option value="manually_setup">Manually Setup</option>
@@ -120,7 +126,9 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a href="" class="video-btn" data-toggle="modal" data-src="{{ $members_video->link }}" data-target="#video_pop"><i class="fa fa-play" style="font-size: 20px" aria-hidden="true"></i>   </a>
+                                            <a href="" class="video-btn" data-toggle="modal" data-target="#myModal" data-src="{{ $members_video->link }}" >
+                                                <i class="fa fa-play " aria-hidden="true"></i>
+                                            </a>
                                         </td>
                                         <td data-target="name" class="">{{ $members_video->name }}</td>
                                         <td data-target="link" class="">{{$members_video->link}}</td>
@@ -187,16 +195,36 @@
     </div>
     <script>
         $(document).ready(function() {
+            // Gets the video src from the data-src on each button
+            var $videoSrc;
+            $('.video-btn').click(function() {
+                $videoSrc = $(this).data( "src" );
+                $("#video").attr('src',$videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1" );
+
+            });
+            //console.log($videoSrc);
+
+            // when the modal is opened autoplay it
+            $('#video_pop').on('shown.bs.modal', function (e) {
+
+                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+            })
+            // stop playing the youtube video when I close the modal
+            $('#video_pop').on('hide.bs.modal', function (e) {
+                $("#video").attr('src',$videoSrc);
+                $("#video").attr('src',$videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0" );
+            })
             /*Insert*/
             $('.add_video').click(function (e) {
                 e.preventDefault();
-                var id = $(this).data("id");
                 $.ajax({
                     url: "/add_members_videos",
                     data: {
-                        category:$('#category').val(),
+                        category:$('#category_insert').val(),
                         name:$('#name_insert').val(),
-                        link:$('#link_insert').val()
+                        status:1,
+                        link:$('#link_insert').val(),
+
                     },
                     method: "POST",
                     dataType: 'html',
@@ -224,7 +252,7 @@
                 e.preventDefault();
                 var id = $('#id').val();
                 $.ajax({
-                    url: "/edit_members_video",
+                    url: "/update_members_video",
                     data: {
                         id: $('#id').val(),
                         name: $('#name').val(),
@@ -275,24 +303,7 @@
                     },
                 });
             })
-            // Gets the video src from the data-src on each button
-            var $videoSrc;
-            $('.video-btn').click(function() {
-                $videoSrc = $(this).data( "src" );
-                $("#video").attr('src',$videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1" );
 
-            });
-            //console.log($videoSrc);
-
-            // when the modal is opened autoplay it
-            $('#video_pop').on('shown.bs.modal', function (e) {
-
-                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
-            })
-            // stop playing the youtube video when I close the modal
-            $('#video_pop').on('hide.bs.modal', function (e) {
-                $("#video").attr('src',$videoSrc);
-            })
         });
     </script>
 
