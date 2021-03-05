@@ -7,7 +7,7 @@ use App\Models\Simple_videos;
 use App\Models\TrainingVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-Use Illuminate\Auth\Events\Validated;
+use Validator;
 use phpDocumentor\Reflection\Types\Compound;
 
 class VideoController extends Controller
@@ -17,28 +17,45 @@ class VideoController extends Controller
 
     public function add_members_videos(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'category' => 'required',
+            'link' => 'required|url',
+        ]);
+        if ($validator->passes()) {
+            $members_video = new Members_Video($request->all());
+            $members_video->save();
+            $videos = view('admin/members_video_tr', compact('members_video'));
+            return $videos;
+        }
+        return response()->json(['error'=>$validator->errors()]);
 
-        $members_video = new Members_Video($request->all());
-        $members_video->save();
-        $videos = view('admin/members_video_tr', compact('members_video'));
-        return $videos;
     }
     /*Update*/
-    public function update_members_video(Request $request){
+    public function update_members_video(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name_update' => 'required',
+            'link_update' => 'required|url',
+        ]);
+        if ($validator->passes()){
         $member = DB::table('members_videos')
             ->where('id', $request->post('id'))
             ->update([
-                'name' => $request->name,
-                'link' => $request->link,
+                'name' => $request->name_update,
+                'link' => $request->link_update,
             ]);
 
         $members = DB::table('members_videos')
-            ->where('id',$request->post('id'))
+            ->where('id', $request->post('id'))
             ->get()
             ->toArray();
         foreach ($members as $members_video)
-        $videos = view('admin/members_video_tr', compact('members_video'));
+            $videos = view('admin/members_video_tr', compact('members_video'));
         return $videos;
+    }
+        return response()->json(['error'=>$validator->errors()]);
+
     }
     /*Delete*/
     public function delete_members_video(Request $request){
@@ -78,29 +95,45 @@ class VideoController extends Controller
     /*Insert*/
     public function add_simple_video(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'link' => 'required|url',
+        ]);
 
-        $simple_video = new Simple_videos($request->all());
-        $simple_video->save();
-        $videos = view('admin/simple_videos_tr', compact('simple_video'));
-        return $videos;
+        if ($validator->passes()) {
+            $simple_video = new Simple_videos($request->all());
+            $simple_video->save();
+            $videos = view('admin/simple_videos_tr', compact('simple_video'));
+            return $videos;
 
+        }
+
+        return response()->json(['error'=>$validator->errors()]);
 
     }
+/*Update*/
 
-    /*Update*/
     public function edit_simple_video(Request $request){
-        DB::table('simple_videos')
-            ->where('id',$request->post('id'))
-            ->update([
-                'name' => $request->name,
-                'link' => $request->link]);
-        $simple_videos = DB::table('simple_videos')
-            ->where('id',$request->post('id'))
-            ->get()
-            ->toArray();
-        foreach ($simple_videos as $simple_video)
-        $videos = view('admin/simple_videos_tr', compact('simple_video'));
-        return $videos;
+        $validator = Validator::make($request->all(), [
+            'name_update' => 'required',
+            'link_update' => 'required|url',
+        ]);
+
+        if ($validator->passes()) {
+            DB::table('simple_videos')
+                ->where('id', $request->post('id'))
+                ->update([
+                    'name' => $request->name_update,
+                    'link' => $request->link_update]);
+            $simple_videos = DB::table('simple_videos')
+                ->where('id', $request->post('id'))
+                ->get()
+                ->toArray();
+            foreach ($simple_videos as $simple_video)
+                $videos = view('admin/simple_videos_tr', compact('simple_video'));
+            return $videos;
+        }
+        return response()->json(['error'=>$validator->errors()]);
 
     }
     /*Delete*/
@@ -141,10 +174,19 @@ class VideoController extends Controller
     /*Insert*/
     public function add_training_video(Request $request)
     {
-        $training_video = new TrainingVideo($request->all());
-        $training_video->save();
-        $videos = view('admin/training_video_tr', compact('training_video'));
-        return $videos;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'link' => 'required|url',
+        ]);
+
+        if ($validator->passes()) {
+            $training_video = new TrainingVideo($request->all());
+            $training_video->save();
+            $videos = view('admin/training_video_tr', compact('training_video'));
+            return $videos;
+        }
+        return response()->json(['error'=>$validator->errors()]);
+
     }
 
     /*Delete*/
@@ -159,11 +201,19 @@ class VideoController extends Controller
     /*Update*/
 
     public function edit_training_video(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name_update' => 'required',
+            'link_update' => 'required|url',
+        ]);
+
+        if ($validator->passes()) {
         DB::table('training_videos')
             ->where('id',$request->post('id'))
             ->update([
-                'name' => $request->name,
-                'link' => $request->link]);
+                'name' => $request->name_update,
+                'link' => $request->link_update
+            ]);
         $training_videos = DB::table('training_videos')
             ->where('id',$request->post('id'))
             ->get()
@@ -171,8 +221,11 @@ class VideoController extends Controller
         foreach ($training_videos as $training_video)
         $videos = view('admin/training_video_tr', compact('training_video'));
         return $videos;
+        }
+         return response()->json(['error'=>$validator->errors()]);
 
-    }
+
+}
     /*Change Status*/
     public function change_training_video_status(Request $request){
         $training_videos = DB::table('training_videos')->where('id',$request->post('id'))->get();

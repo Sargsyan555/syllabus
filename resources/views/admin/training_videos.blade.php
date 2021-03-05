@@ -34,16 +34,19 @@
                         <h4 class="fw-700 m-0 fs-base">Add Simple Videos</h4>
                     </div>
                     <div id="cardBasicInput" class="card-body show">
-                        <form  id="add_details" name="add" class="group">
+                        <form  id="add_details" name="productForm" class="group">
                             <div class="mb-3">
-                                <label for="name">Video Name</label>
+                                <label for="name_insert">Video Name</label>
                                 <input type="text" id="name_insert" class="form-control" name="name" required>
+                                <span class="text-danger error-text name_err"></span>
                             </div>
                             <div class="mb-3">
-                                <label for="example-input-link">Video Link</label>
-                                <input type="url" id="link_insert" name="link" class="form-control"  required>
+                                <label for="link_insert">Video Link</label>
+                                <input type="url" id="link_insert" name="link" class="form-control" required>
+                                <span class="text-danger error-text link_err"></span>
+
                             </div>
-                            <button type="submit" class="add_video btn btn-highlight waves-effect">Add Video</button>
+                            <button class="add_video btn btn-highlight waves-effect">Add Video</button>
                         </form>
                     </div>
                 </div>
@@ -97,7 +100,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="li">
-                                                    <a type="button" data-role="update_category" data-id='{{$training_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
+                                                    <a    type="button" data-role="update_category" data-id='{{$training_video->id}}' class="update " data-toggle="modal" data-target="#myModalEdit"  >
                                                         <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
                                                     </a>
                                                 </li>
@@ -117,7 +120,7 @@
 
         <!-- Modal -->
 
-        <div class="modal" id="myModal">
+        <div class="modal" id="myModalEdit">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal Header -->
@@ -125,19 +128,24 @@
                         <h4 class="modal-title">Update videos</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <form data-toggle="validator">
+                    <div class="modal-body col-6 m-auto">
+                        <form >
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" class="form-control" name="name" data-target="name" id="name" required="required">
+                                <label for="name_update">Name:</label>
+                                <input type="text" class="form-control" name="name_update" data-target="name_update" id="name_update">
+                                <span class="text-danger error-text name_update_err"></span>
+
                             </div>
                             <div class="form-group">
-                                <label for="link">Link:</label>
-                                <input type="text" class="form-control " name="link" data-target="link" id="link" required="required">
+                                <label for="link_update">Link:</label>
+                                <input type="url" class="form-control " name="link_update" data-target="link_update" id="link_update">
+                                <span class="text-danger error-text link_update_err"></span>
+
                             </div>
                             <input type="hidden" name="id" id="id" />
-                            <button  class="btn btn-primary mt-3 update_data" name="insert"  value="" data-dismiss="modal">Submit</button>
+                            <button  class="btn btn-primary mt-3  update_data" name="insert"  value="" >Submit</button>
                         </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
@@ -165,38 +173,10 @@
                 $("#video").attr('src',videoSrc);
                 $("#video").attr('src',videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0" );
             })
-            $(document).on('click', '.update', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                var name = $('#' + id).children('td[data-target="name"]').text();
-                var link = $('#' + id).children('td[data-target="link"]').text();
-                $('#name').val(name)
-                $('#link').val(link)
-                $('#id').val(id)
-            });
-            $(document).on('click', '.update_data', function (e) {
-                e.preventDefault();
-                var id = $('#id').val();
-                $.ajax({
-                    url: "/edit_training_video",
-                    data: {
-                        id: $('#id').val(),
-                        name: $('#name').val(),
-                        link: $('#link').val()
-                    },
-                    method: "POST",
-                    dataType: 'html',
-                    success: function (res) {
-                        $('.'+id).remove();
-                        $('#table_data').prepend(res);
-                        },
-                    error: function () {
-                        alert('There are nothing for change')
-                    }
-                });
-            });
             $('.add_video').click(function (e) {
+
                 e.preventDefault();
+                $('.error-text').empty();
 
                 $.ajax({
                     url: "/add_training_video",
@@ -206,17 +186,57 @@
                         link:$('#link_insert').val()
                     },
                     method: "POST",
-                    dataType: 'html',
                     success: function (res) {
-                        $('#add_details')[0].reset();
-                        $('#table_data').prepend(res);
-                    },
-                    error: function () {
-                        alert('error')
+                        if($.isEmptyObject(res.error)){
+                            $('#add_details')[0].reset();
+                            $('#table_data').prepend(res);
+
+                        }else {
+                            printErrorMsg(res.error);
+                        }
                     }
                 });
-
             })
+            $(document).on('click', '.update', function(e){
+                e.preventDefault();
+                var id = $(this).data('id');
+                var name = $('#'+id).children('td[data-target="name"]').text();
+                var link = $('#'+id).children('td[data-target="link"]').text();
+                $('#name_update').val(name)
+                $('#link_update').val(link)
+                $('#id').val(id)
+            });
+            $(document).on('click', '.update_data', function (e) {
+                e.preventDefault();
+                $('.error-text').empty();
+
+                var id = $('#id').val();
+                $.ajax({
+                    url: "/edit_training_video",
+                    data: {
+                        id: $('#id').val(),
+                        name_update: $('#name_update').val(),
+                        link_update: $('#link_update').val(),
+
+                    },
+                    method: "POST",
+                    success: function (res) {
+                        if ($.isEmptyObject(res.error)) {
+                            $('.' + id).remove();
+                            $('#table_data').prepend(res);
+                        } else {
+                            printErrorMsg(res.error);
+                        }
+                    }
+                });
+            });
+
+            function printErrorMsg (msg) {
+                $.each( msg, function( key, value ) {
+                    console.log(key);
+                    $('.'+key+'_err').text(value);
+                });
+            }
             $('.delete_video').click(function (e) {
                 e.preventDefault();
                 var id = $(this).data("id");

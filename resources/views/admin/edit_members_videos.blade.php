@@ -37,9 +37,9 @@
                     <div id="cardBasicInput" class="card-body show">
                         <form id="add_details" name="productForm" class="group">
                             <div class="mb-3">
-                                <label for="example-input">Select Category</label>
+                                <label for="category_inser">Select Category</label>
 
-                                <select class="form-control" name="category" id="category_inser" required="" aria-label=".form-select-lg example">
+                                <select class="form-control" name="category" id="category_insert"  aria-label=".form-select-lg example">
                                     <option value="">  Select   </option>
                                     <option value="use_of_software">Use of Software</option>
                                     <option value="manually_setup">Manually Setup</option>
@@ -47,14 +47,17 @@
                                     <option value="run_simulation">Run Simulation</option>
                                     <option value="flat_bet_and_videos">Flat Bet And Videos</option>
                                 </select>
+                                <span class="text-danger error-text category_err"></span>
                             </div>
                             <div class="mb-3">
-                                <label for="name">Video Name</label>
+                                <label for="name_insert">Video Name</label>
                                 <input type="text" id="name_insert" class="form-control" name="name">
+                                <span class="text-danger error-text name_err"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="example-input-link">Video Link</label>
                                 <input type="text" id="link_insert" name="link" class="form-control">
+                                <span class="text-danger error-text link_err"></span>
                             </div>
                             <button class="add_video btn btn-highlight waves-effect">Add Video</button>
                         </form>
@@ -85,39 +88,6 @@
                                 </thead>
                                 <tbody id="table_data" >
                                 @foreach ($members_videos as $members_video)
-                                {{--
-                                    <tr id="{{$members_video->id}}">
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <a href="" class="video-btn" data-toggle="modal" data-src="{{ $members_video->link }}" data-target="#video_pop"><i class="fa fa-play" style="font-size: 20px" aria-hidden="true"></i>   </a>
-                                        </td>
-                                        <td data-target="name" class="video_name{{$members_video->id}}">{{ $members_video->name }}</td>
-                                        <td data-target="link" class="video_link{{$members_video->id}}">{{$members_video->link}}</td>
-                                        <td >
-                                            <input type="checkbox" class="checked checked{{$members_video->id}} " name="services[]" value="{{$members_video->id}}" @if ($members_video->status==1) checked="checked" @endif >
-                                        </td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li class="li">
-
-                                                    <a class="delete_video delete{{$members_video->id}}" data-id="{{$members_video->id}}"  >
-                                                        <i class="fal fa-trash" data-bs-original-title="Archive" data-bs-toggle="tooltip"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="li">
-                                                    <a type="button" data-role="update_category" data-id='{{$members_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
-                                                        <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    --}}
                                     <tr class="{{$members_video->id}}" id="{{$members_video->id}}">
                                         <td>
                                             <label class="custom-checkbox">
@@ -143,7 +113,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="li">
-                                                    <a type="button" data-role="update_category" data-id='{{$members_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
+                                                    <a type="button" data-role="update_category" data-id='{{$members_video->id}}' class="update" data-toggle="modal" data-target="#myModalEdit"  >
                                                         <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
                                                     </a>
                                                 </li>
@@ -162,7 +132,7 @@
 
         <!-- Modal -->
 
-        <div class="modal" id="myModal">
+        <div class="modal" id="myModalEdit">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal Header -->
@@ -170,18 +140,22 @@
                         <h4 class="modal-title">Update videos</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body col-6 m-auto">
                         <form >
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" class="form-control" name="name" data-target="name" id="name">
+                                <label for="name_update">Name:</label>
+                                <input type="text" class="form-control" name="name_update" data-target="name_update" id="name_update">
+                                <span class="text-danger error-text name_update_err"></span>
+
                             </div>
                             <div class="form-group">
-                                <label for="link">Link:</label>
-                                <input type="text" class="form-control " name="link" data-target="link" id="link">
+                                <label for="link_update">Link:</label>
+                                <input type="url" class="form-control " name="link_update" data-target="link_update" id="link_update">
+                                <span class="text-danger error-text link_update_err"></span>
+
                             </div>
                             <input type="hidden" name="id" id="id" />
-                            <button  class="btn btn-primary mt-3 update_data" name="insert"  value="" data-dismiss="modal">Submit</button>
+                            <button  class="btn btn-primary mt-3  update_data" name="insert"  value="" >Submit</button>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -217,6 +191,8 @@
             /*Insert*/
             $('.add_video').click(function (e) {
                 e.preventDefault();
+                $('.error-text').empty();
+
                 $.ajax({
                     url: "/add_members_videos",
                     data: {
@@ -227,48 +203,58 @@
 
                     },
                     method: "POST",
-                    dataType: 'html',
                     success: function (res) {
-                        $('#add_details')[0].reset();
-                        $('#table_data').prepend(res);
-                    },
-                    error: function () {
-                        alert('error')
+                        if($.isEmptyObject(res.error)){
+                            $('#add_details')[0].reset();
+                            $('#table_data').prepend(res);
+
+                        }else{
+                            printErrorMsg(res.error)
+                        }
                     }
                 });
             })
+
             /*Insert Modal*/
             $(document).on('click', '.update', function(e){
                 e.preventDefault();
                 var id = $(this).data('id');
                 var name = $('#'+id).children('td[data-target="name"]').text();
                 var link = $('#'+id).children('td[data-target="link"]').text();
-                $('#name').val(name)
-                $('#link').val(link)
+                $('#name_update').val(name)
+                $('#link_update').val(link)
                 $('#id').val(id)
             });
             /*Update*/
             $(document).on('click', '.update_data', function(e) {
                 e.preventDefault();
+                $('.error-text').empty();
+
                 var id = $('#id').val();
                 $.ajax({
                     url: "/update_members_video",
                     data: {
                         id: $('#id').val(),
-                        name: $('#name').val(),
-                        link: $('#link').val()
+                        name_update: $('#name_update').val(),
+                        link_update: $('#link_update').val()
                     },
                     method: "POST",
-                    dataType: 'html',
                     success: function (res) {
-                        $('.'+id).remove();
-                        $('#table_data').prepend(res);
-                    },
-                    error: function () {
-                        alert('error')
+                        if($.isEmptyObject(res.error)) {
+                            $('.' + id).remove();
+                            $('#table_data').prepend(res);
+                        }else{
+                            printErrorMsg(res.error)
+                        }
                     }
                 });
             });
+            function printErrorMsg (msg) {
+                $.each( msg, function( key, value ) {
+                    console.log(key);
+                    $('.'+key+'_err').text(value);
+                });
+            }
             /*Delete*/
             $('.delete_video').click(function (e) {
                 e.preventDefault();
@@ -306,7 +292,4 @@
 
         });
     </script>
-
-
-
 @endsection

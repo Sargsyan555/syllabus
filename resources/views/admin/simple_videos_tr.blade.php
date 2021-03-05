@@ -1,12 +1,3 @@
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
         <tr class="{{$simple_video->id}}" id="{{$simple_video->id}}">
             <td>
@@ -34,7 +25,7 @@
                         </a>
                     </li>
                     <li class="li">
-                        <a type="button" data-role="update_category" data-id='{{$simple_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
+                        <a type="button" data-role="update_category" data-id='{{$simple_video->id}}' class="update" data-toggle="modal" data-target="#myModalEdit"  >
                             <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
                         </a>
                     </li>

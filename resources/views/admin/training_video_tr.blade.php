@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="li">
-                    <a type="button" data-role="update_category" data-id='{{$training_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
+                    <a type="button" data-role="update_category" data-id='{{$training_video->id}}' class="update" data-toggle="modal" data-target="#myModalEdit" >
                         <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
                     </a>
                 </li>

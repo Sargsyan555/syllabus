@@ -59,6 +59,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('add_simple_video',[App\Http\Controllers\VideoController::class, 'add_simple_video']);
     Route::post('add_training_video',[App\Http\Controllers\VideoController::class, 'add_training_video']);
 
+
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);

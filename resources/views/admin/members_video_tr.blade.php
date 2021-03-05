@@ -1,43 +1,41 @@
 
 <tr class="{{$members_video->id}}" id="{{$members_video->id}}">
-            <td>
-                <label class="custom-checkbox">
-                    <input type="checkbox">
-                    <span></span>
-                </label>
-            </td>
-            <td>
-                <a href="" class="video_btn1" data-toggle="modal" data-target="#myModal" data-src="{{ $members_video->link }}" >
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                </a>
-            </td>
-            <td data-target="name" class="">{{ $members_video->name }}</td>
-            <td data-target="link" class="">{{$members_video->link}}</td>
-            <td class="">
-                <input type="checkbox" class="checked_tr checked{{$members_video->id}} " name="services[]" value="{{$members_video->id}}" @if($members_video->status==1) checked="checked" @endif >
-            </td>
-            <td>
-                <ul class="list-unstyled table-actions">
-                    <li class="li">
-                        <a class="delete_video delete{{$members_video->id}}" data-id="{{$members_video->id}}"  >
-                            <i class="fal fa-trash" data-bs-original-title="Archive" data-bs-toggle="tooltip"></i>
-                        </a>
-                    </li>
-                    <li class="li">
-                        <a type="button" data-role="update_category" data-id='{{$members_video->id}}' class="update" data-toggle="modal" data-target="#myModal"  >
-                            <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
-                        </a>
-                    </li>
-                </ul>
-            </td>
+      <td>
+          <label class="custom-checkbox">
+              <input type="checkbox">
+              <span></span>
+          </label>
+      </td>
+      <td>
+          <a href="" class="video_btn1" data-toggle="modal" data-target="#myModal" data-src="{{ $members_video->link }}" >
+              <i class="fa fa-play" aria-hidden="true"></i>
+          </a>
+      </td>
+      <td data-target="name" class="">{{ $members_video->name }}</td>
+      <td data-target="link" class="">{{$members_video->link}}</td>
+      <td class="">
+          <input type="checkbox" class="checked_tr checked{{$members_video->id}} " name="services[]" value="{{$members_video->id}}" @if($members_video->status==1) checked="checked" @endif >
+      </td>
+      <td>
+          <ul class="list-unstyled table-actions">
+              <li class="li">
+                  <a class="delete_video delete{{$members_video->id}}" data-id="{{$members_video->id}}"  >
+                      <i class="fal fa-trash" data-bs-original-title="Archive" data-bs-toggle="tooltip"></i>
+                  </a>
+              </li>
+              <li class="li">
+                  <a type="button" data-role="update_category" data-id='{{$members_video->id}}' class="update" data-toggle="modal" data-target="#myModalEdit"  >
+                      <i class="fal fa-pen" data-bs-original-title="Edit" data-bs-toggle="tooltip"></i>
+                  </a>
+              </li>
+          </ul>
+      </td>
         </tr>
        <!-- Modal -->
        <div class="container">
            <div class="modal fade rounded" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
                    <div class="modal-content">
-
-                    asdfhjkl;jdasfhjkldfs
                        <div class="modal-body">
 
                            <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
