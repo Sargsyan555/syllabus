@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form id="contact-form" method="post" action="php/contact.php">
+                    <form id="contact-form" method="post">
                         <div class="messages"></div>
                         <div class="row">
                             <div class="col-md-6">

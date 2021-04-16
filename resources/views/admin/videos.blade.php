@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Automated Setup Videos')
+@section('title', 'Videos')
 
 @section('content')
     <div class="page-content">
@@ -8,7 +8,7 @@
             <ol class="breadcrumb ps-0 fs-base">
                 <li class="breadcrumb-item"><a href="#">Syllabus</a></li>
                 <li class="breadcrumb-item"><span>Members Videos </span></li>
-                <li class="breadcrumb-item active" aria-current="page">Automated Setup</li>
+                <li class="breadcrumb-item active" aria-current="page">Run Simulation</li>
             </ol>
         </nav>
         <div class="row">

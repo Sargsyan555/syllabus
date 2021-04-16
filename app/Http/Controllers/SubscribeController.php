@@ -27,7 +27,7 @@ class SubscribeController extends Controller
     }
 
     public function destroy(Request $request){
-             DB::table('subscribers')->where('id',$request->post('id'))->delete();
+       Subscribe::where('id',$request->get('id'))->delete();
 
         return response()->json([
             'success' => 'Record deleted successfully!'

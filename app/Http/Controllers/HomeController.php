@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Members_Video;
+use App\Models\Simple_videos;
+use App\Models\Subscribe;
+use App\Models\TrainingVideo;
 use App\Models\User;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +29,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
     public function index()
     {
         $users= User::all();
@@ -39,28 +45,33 @@ class HomeController extends Controller
     public function subscribers()
     {
         return view('admin/subscribers', [
-            'subscribers' => DB::table('subscribers')->paginate(5)
+            'subscribers' => Subscribe::paginate(5)
         ]);
     }
     public function simple_videos()
     {
-        $simple_videos = DB::table('simple_videos')->get()->toArray();
+        $simple_videos = Simple_videos::get();
 
         return view('admin/simple_videos',compact('simple_videos'));
     }
     public function training_videos()
     {
-        $training_videos = DB::table('training_videos')->get()->toArray();
+        $training_videos = TrainingVideo::get();
 
         return view('admin/training_videos',compact('training_videos'));
     }
     public function edit_members_videos()
     {
-        $members_videos = DB::table('members_videos')->get()->toArray();
+        $members_videos = Members_Video::get();
         return view('admin/edit_members_videos',compact('members_videos'));
     }
+    public function changePassPage()
+    {
+        $users= User::all();
+        return view('admin/change_pass',compact('users'));
+    }
     public function change_user_status(Request $request){
-        $users = DB::table('users')->where('id',$request->post('id'))->get();
+        $users = User::where('id',$request->get('id'))->get();
 
         foreach ($users as $user){
             $status = $user->status;
@@ -71,8 +82,7 @@ class HomeController extends Controller
         }else{
             $active = 1;
         }
-        DB::table('users')
-            ->where('id',$request->post('id'))
+        User::where('id',$request->get('id'))
             ->update(['status' => $active]);
         return response()->json([
             'success' => $active

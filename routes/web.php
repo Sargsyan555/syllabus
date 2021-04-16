@@ -8,6 +8,7 @@ use App\Http\Controllers\SubscribeController;
 use App\Http\Controllers\ProductAjaxController;
 use App\Http\Controllers\Members_videosController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,18 +28,17 @@ Route::get('low-of-third', [PageController::class,'law_of_thrid']);
 //Route::get('login', [PageController::class,'login']);
 Route::get('mobile-app', [PageController::class,'mobile_App']);
 Route::get('sing-up', [PageController::class,'sing_up']);
-Route::get('forgot-password', [PageController::class,'forgot_password']);
+/*pass*/
+/*Route::get('forgot-password', [PageController::class,'forgot_password']);*/
+
+Route::post('reset_password', [\App\Http\Controllers\ResetController::class,'forgotPass']);
+Route::get('change_password', [\App\Http\Controllers\ResetController::class,'chagePass']);
 
 Auth::routes();
-
-
 
 Route::middleware(['role:admin'])->group(function () {
     Route::resource('subscribes',SubscribeController::class);
     Route::get('/subscribers', [App\Http\Controllers\HomeController::class, 'subscribers']);
-    Route::get('/users', [App\Http\Controllers\HomeController::class, 'users']);
-    Route::get('/users', [App\Http\Controllers\HomeController::class, 'users']);
-    Route::get('/users', [App\Http\Controllers\HomeController::class, 'users']);
     Route::get('/users', [App\Http\Controllers\HomeController::class, 'users']);
     Route::get('/members_videos', [App\Http\Controllers\HomeController::class, 'edit_members_videos']);
     Route::get('/simple_videos', [App\Http\Controllers\HomeController::class, 'simple_videos']);
@@ -58,20 +58,19 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('change_user_status',[App\Http\Controllers\HomeController::class, 'change_user_status']);
     Route::post('add_simple_video',[App\Http\Controllers\VideoController::class, 'add_simple_video']);
     Route::post('add_training_video',[App\Http\Controllers\VideoController::class, 'add_training_video']);
+    Route::get('change_password', [\App\Http\Controllers\HomeController::class,'changePassPage']);
+    Route::post('change_pass', [\App\Http\Controllers\ResetController::class,'ChangePass']);
+
 
 
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/use_of_software', [App\Http\Controllers\VideoController::class, 'use_of_software']);
-    Route::get('/manually_setup', [App\Http\Controllers\VideoController::class, 'manually_setup']);
-    Route::get('/automated_setup', [App\Http\Controllers\VideoController::class, 'automated_setup']);
-    Route::get('/run_simulation', [App\Http\Controllers\VideoController::class, 'run_simulation']);
-    Route::get('/flat_bet_and_videos', [App\Http\Controllers\VideoController::class, 'flat_bet_and_videos']);
+
 });
 Route::middleware(['role:user'])->group(function () {
-
+    Route::get('/video/{name}',  [App\Http\Controllers\VideoController::class, 'return_video'])->name('video');
 });
 
 

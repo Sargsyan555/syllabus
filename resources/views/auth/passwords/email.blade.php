@@ -1,6 +1,6 @@
 
-
 @extends('layouts.base')
+@section('title', 'Send Email')
 
 @section('content')
 
@@ -25,15 +25,16 @@
                 </div>
                 <div class="col-lg-5 col-md-12 ml-auto mr-auto md-mt-5">
                     <div class="login-form text-center">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('password.email') }}">
+                        <form method="POST" action="{{ url('/reset_password') }}">
                             @csrf
-
+                            @if(session('error'))
+                                <div>{{session('error')}}</div>
+                            @endif
+                            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="E-Mail Address" required autocomplete="email" autofocus>
@@ -44,9 +45,9 @@
                                     @enderror
                                 </div>
                             </div>
-                            <a type="submit" class="btn btn-theme border-0" data-text="Send Password Reset Link"><span>S</span><span>e</span><span>n</span><span>d</span>
+                            <button  type="submit" class="btn btn-theme border-0" data-text="Send Password Reset Link"><span>S</span><span>e</span><span>n</span><span>d</span>
                                 <span> </span><span>P</span><span>a</span><span>s</span><span>s</span><span>w</span><span>o</span><span>r</span><span>d</span><span>&nbsp </span><span> R</span><span >e</span><span>s</span><span>s</span><span>e</span><span>t</span> <span>L</span><span>i</span><span>n</span><span>k</span>
-                            </a>
+                            </button>
                         </form>
                     </div>
                 </div>

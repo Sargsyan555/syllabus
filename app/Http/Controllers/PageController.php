@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Simple_videos;
+use App\Models\TrainingVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -9,8 +11,8 @@ class PageController extends Controller
 {
     public function home()
     {
-        $simple_videos = DB::table('simple_videos')->where('status',1)->get()->toArray();
-        $training_videos = DB::table('training_videos')->where('status',1)->get()->toArray();
+        $training_videos = TrainingVideo::where('status',1)->get();
+        $simple_videos = Simple_videos::where('status',1)->get();
 
         return view('front/home' ,compact('simple_videos','training_videos'));
     }

@@ -133,35 +133,35 @@ Website: https://teachprod.com
                                 <i class="fas fa-video"></i>
                                 <span>Training Videos</span>
                             </a>
-                        </li>
+                        </li>{{--{{Route('test'./$val}}"--}}
                         @endif
-                        @if( Auth::user()->status == 1)
+                        @if( Auth::user()->status == 1 &&   Auth::user()->role == 'user' )
                             <li class="sidebar-item">
-                                <a href="/use_of_software">
+                                <a href="{{route('video','use_of_software')}}">
                                     <i class="fas fa-video"></i>
                                     <span>Use of Software</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/manually_setup">
+                                <a href="{{route('video','manually_setup')}}">
                                     <i class="fas fa-video"></i>
                                     <span>Manually Setup</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/automated_setup">
+                                <a href="{{route('video','automated_setup')}}">
                                     <i class="fas fa-video"></i>
                                     <span>Automated Setup</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/run_simulation">
+                                <a href="{{route('video','run_simulation')}}">
                                     <i class="fas fa-video"></i>
                                     <span>Run Simulation</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/flat_bet_and_videos">
+                                <a href="{{route('video','flat_bet_and_videos')}}">
                                     <i class="fas fa-video"></i>
                                     <span>Flat Bet And Videos</span>
                                 </a>
@@ -223,6 +223,10 @@ Website: https://teachprod.com
                          </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown dropdown-animate">
+                        <a href="/change_password" class="dropdown-item">
+                            <i class="fas fa-key"></i>
+                            <span>Change password</span>
+                        </a>
                         <a href="/logout" class="dropdown-item">
                             <i class="fal fa-sign-out me-1"></i>
                             <span>Sign out</span>
